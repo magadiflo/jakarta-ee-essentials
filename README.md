@@ -44,7 +44,7 @@ aplicación:
 
 ---
 
-## ⚖️ Tomcat vs. WildFly
+## ⚖️ Tomcat vs. Servidores de aplicaciones completos (WildFly, Payara, GlassFish, Open Liberty)
 
 En el ecosistema Java existen distintos tipos de servidores. Entender sus diferencias es clave para elegir el más
 adecuado según el contexto.
@@ -52,18 +52,25 @@ adecuado según el contexto.
 ### 🐱 Apache Tomcat
 
 - Es un `servidor de servlets`(*Servlet Container*).
-- Implementa las especificaciones básicas de `Jakarta Servlet`, `Jakarta Pages`, `Jakarta Expression Language`,
-  `Jakarta WebSocket`, `Jakarta Annotations` y `Jakarta Authentication`.
+- Implementa concretamente las siguiente especificaciones:
+    - `Jakarta Servlet`
+    - `Jakarta Pages (JSP)`
+    - `Jakarta Expression Language (EL)`
+    - `Jakarta WebSocket`
+    - `Jakarta Annotations`
+    - `Jakarta Authentication`.
 - Ligero y ampliamente adoptado para aplicaciones web y APIs REST.
 - No cubre todas las especificaciones de Jakarta EE (no soporta EJB, JMS, etc.).
-- Compatible con **JAX-RS, CDI, JPA, Bean Validation y JTA** mediante dependencias externas,
-  que son las especificaciones clave para trabajar con Quarkus.
+- Esto significa que si tu aplicación usa otras APIs de Jakarta EE como `JAX-RS`, `CDI`, `JPA`, `Bean Validation`,
+  `JTA`, etc., `Tomcat no las provee`. En ese caso, tendríamos que agregar esas dependencias con
+  `<scope>compile</scope>` (o sin declarar scope, que es el valor por defecto)
+  `para que sí se empaqueten dentro del WAR`.
 
-### 🦅 WildFly
+### 🦅 Servidores de aplicaciones completos (WildFly, Payara, GlassFish, Open Liberty)
 
-- Es un **servidor de aplicaciones completo** (*Application Server*).
-- Implementa **toda la especificación Jakarta EE**: EJB, JMS, JAX-RS, CDI, JPA, entre otros.
-- Más pesado y complejo que Tomcat; orientado a aplicaciones empresariales tradicionales.
+- Son **servidores de aplicaciones completos** (*Application Servers*).
+- Implementan **toda la especificación Jakarta EE**: `EJB`, `JMS`, `JAX-RS`, `CDI`, `JPA`, `JSF`, entre otros.
+- Más pesados y complejos que Tomcat; orientado a aplicaciones empresariales tradicionales.
 - Resulta útil cuando se necesitan tecnologías como EJB, menos comunes en frameworks modernos.
 
 ### 📌 Conclusión práctica
@@ -133,8 +140,56 @@ necesarios.
 
 - `jakarta.jakartaee-api` → Incluye todas las APIs estándar de Jakarta EE (`Servlets`, `JAX-RS`, `CDI`, `JPA`, etc.).
 - `scope="provided"` → Indica que estas librerías serán proporcionadas por el servidor de aplicaciones
-  (`Tomcat`, `WildFly`, etc.), no se empaquetan dentro del WAR.
+  (`Tomcat`, `WildFly`, etc.), `no se empaquetan dentro del WAR`.
 - Esto asegura que tu aplicación sea portable y ligera.
+
+#### Cuando declaras una dependencia con `<scope>provided</scope>`:
+
+- `Durante el desarrollo`: la dependencia está disponible en tu IDE y en el classpath de compilación, por eso
+  puedes importar las clases y anotaciones de `jakarta.*` sin problemas.
+- `En la compilación/packaging`: Maven compila tu código y genera el `WAR` correctamente porque tiene acceso
+  a esas clases.
+- `En el artefacto final (WAR)`: esas librerías `no se empaquetan` dentro del WAR.
+- `En ejecución`: se espera que el `servidor de aplicaciones` (Tomcat, WildFly, Payara, etc.) ya tenga esas
+  librerías y las `“provea”` en su propio classpath.
+
+### 🔑 ¿Qué es el classpath?
+
+- En términos técnicos, el `Classpath` es una `variable de entorno` o un `parámetro de configuración` que le indica a
+  la `Java Virtual Machine (JVM)` y al `compilador (javac)` dónde buscar archivos `.class` (el código ya compilado)
+  y archivos de recursos (como `.properties`, `.xml` o `imágenes`).
+- El `classpath` en Java es, en pocas palabras, la
+  `“lista de rutas” donde la JVM busca las clases y librerías necesarias para ejecutar tu aplicación`.
+  Es como un mapa que le dice al motor de Java dónde encontrar los `.class` y `.jar` que tu programa necesita.
+
+Imagina que estás escribiendo tu código Java y en algún momento escribes esto:
+
+````java
+import jakarta.servlet.http.HttpServlet;
+````
+
+Tú le estás diciendo a Java `oye, necesito usar la clase HttpServlet`. Pero Java en ese momento se pregunta:
+¿y dónde está esa clase? ¿en qué archivo .jar vive? Ahí es donde entra el `classpath`.
+
+#### En la práctica
+
+Cuando `Maven` descarga tus dependencias del `pom.xml`, las guarda como archivos `.jar` en tu computadora
+(en una carpeta llamada `.m2`). **El `classpath` es básicamente la lista que le dice a Java:**
+
+> *"Busca las clases que necesitas en estos `.jar` que están aquí y aquí"*
+
+#### Dos momentos importantes
+
+- En `compilación`: Java necesita saber dónde están las clases para verificar que tu código está bien escrito.
+  `Maven` arma el `classpath` con los `.jar` de tus dependencias.
+- En `ejecución`: La `JVM` necesita saber dónde están las clases para poder ejecutar tu programa. Si una clase
+  no está en el `classpath` en este momento, obtienes el famoso error `ClassNotFoundException`.
+
+#### Conectando con `provided`
+
+> Cuando declaras una dependencia como `provided`, `Maven` la pone en el `classpath` **solo durante la compilación**
+> (para que puedas escribir tu código sin errores), pero **no la mete dentro del WAR**, porque asume que el servidor
+> (Tomcat, WildFly, etc.) ya la tendrá disponible en su propio `classpath` cuando ejecute tu aplicación.
 
 ### 🔧 Plugins de Maven
 
