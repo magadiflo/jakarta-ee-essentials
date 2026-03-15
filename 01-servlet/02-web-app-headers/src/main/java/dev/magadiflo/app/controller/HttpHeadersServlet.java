@@ -1,4 +1,4 @@
-package dev.magadiflo.app;
+package dev.magadiflo.app.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,6 +12,7 @@ import java.util.Enumeration;
 
 @WebServlet("/http-headers")
 public class HttpHeadersServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
