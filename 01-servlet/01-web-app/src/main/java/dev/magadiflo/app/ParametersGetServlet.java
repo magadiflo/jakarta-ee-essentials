@@ -23,23 +23,23 @@ public class ParametersGetServlet extends HttpServlet {
 
         resp.setContentType("text/html;charset=utf-8");
 
-        PrintWriter out = resp.getWriter();
-        out.println("""
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Document</title>
-                </head>
-                <body>
-                    <h1>Parámetros Get de la URL</h1>
-                """);
-        out.println("<p><b>Saludo: </b>%s</p>".formatted(greetings));
-        out.println("""
-                    </body>
-                </html>
-                """);
-        out.close();
+        try (PrintWriter out = resp.getWriter()) {
+            out.println("""
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Document</title>
+                    </head>
+                    <body>
+                        <h1>Parámetros Get de la URL</h1>
+                    """);
+            out.println("<p><b>Saludo: </b>%s</p>".formatted(greetings));
+            out.println("""
+                        </body>
+                    </html>
+                    """);
+        }
     }
 }

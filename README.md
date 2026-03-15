@@ -1,8 +1,35 @@
-# 🌐 Jakarta EE - Fundamentos esenciales
+# 🌐 Jakarta EE — Fundamentos Esenciales
 
-Este repositorio reúne los **fundamentos esenciales de Jakarta EE** que todo desarrollador Java debería conocer.  
-El objetivo es construir una base sólida sobre los estándares de Jakarta antes de dar el salto a frameworks modernos
-como Quarkus.
+Este repositorio reúne los **fundamentos esenciales de Jakarta EE** que todo desarrollador Java debería conocer antes
+de dar el salto a frameworks modernos como `Quarkus`.
+
+El enfoque no es cubrir `Jakarta EE` en su totalidad, sino identificar y dominar las especificaciones que `Quarkus`
+implementa directamente, construyendo así una base sólida y con propósito claro.
+
+---
+
+### 🗺️ ¿Qué veremos y por qué?
+
+No todos los temas de `Jakarta EE` son relevantes para `Quarkus`. La siguiente tabla muestra las especificaciones
+que sí importan, su equivalente en `Spring` y el nivel de profundidad recomendado:
+
+| Especificación                                    | Para qué sirve                                                                  | Equivalente en Spring              | Prioridad   |
+|---------------------------------------------------|---------------------------------------------------------------------------------|------------------------------------|-------------|
+| `Jakarta Servlet`                                 | Base del stack web. Request, Response, ciclo de vida                            | `DispatcherServlet` (interno)      | 🟡 Contexto |
+| `Jakarta RESTful Web Services (JAX-RS)`           | Crear REST APIs con `@Path`, `@GET`, `@POST`, `@Produces`, `@Consumes`          | `@RestController`                  | 🔴 Alta     |
+| `Jakarta CDI (Contexts and Dependency Injection)` | Inyección de dependencias con `@Inject`, `@ApplicationScoped`, `@RequestScoped` | `@Autowired`, `@Bean`              | 🔴 Alta     |
+| `Jakarta Persistence (JPA)`                       | Persistencia con `@Entity`, `@Table`, `@OneToMany`, `EntityManager`             | `Spring Data JPA` (mismo estándar) | 🟡 Media    |
+| `Jakarta Validation (Bean Validation)`            | Validaciones con `@NotNull`, `@Size`, `@Email`                                  | Mismo estándar                     | 🟢 Baja     |
+| `Jakarta Transactions (JTA)`                      | Manejo de transacciones con `@Transactional`                                    | `@Transactional` de Spring         | 🟡 Media    |
+
+### 🎯 ¿A qué profundidad estudiarlo?
+
+> No necesitamos ser experto en `Jakarta EE`. La meta es clara:
+>
+> - **JAX-RS y CDI** → estudiarlos bien, son la columna vertebral de `Quarkus`.
+> - **JPA y Bean Validation** → refuerzo, ya los conoces desde `Spring`, es el mismo estándar.
+> - **Servlet** → contexto base, entender qué hay debajo de `JAX-RS`.
+> - **JTA** → comprensión general, `Quarkus` lo abstrae bastante.
 
 ---
 
@@ -75,11 +102,10 @@ adecuado según el contexto.
 
 ### 📌 Conclusión práctica
 
-Para un repaso de Jakarta EE enfocado en Quarkus, **Tomcat es suficiente**: cubre todas las especificaciones
-relevantes, es ligero y elimina la complejidad innecesaria.
-
-**WildFly** es la opción si en el futuro quisieras profundizar en EJB u otras especificaciones del stack completo,
-pero queda fuera del objetivo actual.
+- Para un repaso de Jakarta EE enfocado en Quarkus, `Tomcat es suficiente`: cubre todas las especificaciones
+  relevantes, es ligero y elimina la complejidad innecesaria.
+- `WildFly` es la opción si en el futuro quisieras profundizar en EJB u otras especificaciones del stack completo,
+  pero queda fuera del objetivo actual.
 
 ## 🚀 Instalando y configurando Apache Tomcat 11
 
