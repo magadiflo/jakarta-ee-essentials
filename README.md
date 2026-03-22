@@ -39,7 +39,7 @@ que sí importan, su equivalente en `Spring` y el nivel de profundidad recomenda
 aplicaciones empresariales en Java. Es el sucesor de `Java EE` y define APIs que permiten construir aplicaciones
 `portables`, `escalables` y `mantenibles`, desplegadas sobre un servidor de aplicaciones.
 
-![01.png](assets/01-introduccion/01.png)
+![01.png](assets/00-introduccion/01.png)
 
 ### 🏗️ Contenedores dentro de un servidor de aplicaciones
 
@@ -117,7 +117,7 @@ adecuado según el contexto.
 - En nuestro caso, usaremos el binario para Windows:  
   [Windows zip (pgp, sha512)](https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.18/bin/apache-tomcat-11.0.18-windows-x64.zip)
 
-  ![02.png](assets/01-introduccion/02.png)
+  ![02.png](assets/00-introduccion/02.png)
 
 ### 2️⃣ Instalación
 
@@ -378,7 +378,7 @@ Uploaded: http://localhost:8080/manager/text/deploy?path=%2F01-web-app&update=tr
 
 Así que mediante nuestro navegador vamos a esa dirección y vemos que todo está funcionando correctamente.
 
-![03.png](assets/01-introduccion/03.png)
+![03.png](assets/00-introduccion/03.png)
 
 Incluso podemos ir al servidor y ver que nuestro proyecto está desplegado en el directorio `/webapps`.
 
@@ -401,7 +401,7 @@ También podemos desplegar manualmente el `.war`:
 
 1. Ir a `http://localhost:8080/` → opción `Manager App`.
 
-![04.png](assets/01-introduccion/04.png)
+![04.png](assets/00-introduccion/04.png)
 
 2. Autenticarse con las credenciales configuradas en `tomcat-users.xml`.
 3. En la sección `Archivo WAR a desplegar`, seleccionar el `.war` generado en:
@@ -410,20 +410,20 @@ También podemos desplegar manualmente el `.war`:
 01-servlet/01-web-app/target/01-web-app-1.0-SNAPSHOT.war
 ````
 
-![05.png](assets/01-introduccion/05.png)
+![05.png](assets/00-introduccion/05.png)
 
 4. Opcionalmente, renombrar el archivo a algo más corto (ejemplo: `01-web-app-v2.war`).
 
-![06.png](assets/01-introduccion/06.png)
+![06.png](assets/00-introduccion/06.png)
 
 5. Presionar Desplegar.
 6. ✅ Verás el mensaje OK y tu aplicación aparecerá en la lista de aplicaciones desplegadas.
 
-![07.png](assets/01-introduccion/07.png)
+![07.png](assets/00-introduccion/07.png)
 
 👉 Ejemplo: `http://localhost:8080/01-web-app-v2`
 
-![08.png](assets/01-introduccion/08.png)
+![08.png](assets/00-introduccion/08.png)
 
 ### 📌 Nota práctica
 
