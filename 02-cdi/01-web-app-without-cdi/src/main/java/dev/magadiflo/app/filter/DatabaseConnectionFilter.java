@@ -1,6 +1,6 @@
 package dev.magadiflo.app.filter;
 
-import dev.magadiflo.app.db.DriverManagerConnectionFactory;
+import dev.magadiflo.app.db.DataSourceConnectionFactory;
 import dev.magadiflo.app.exception.DatabaseException;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -10,6 +10,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ public class DatabaseConnectionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        try (Connection connection = DriverManagerConnectionFactory.getConnection()) {
+        try (Connection connection = DataSourceConnectionFactory.getConnection()) {
 
             // Desactivamos autoCommit para manejar la transacción manualmente
             if (connection.getAutoCommit()) {
@@ -48,7 +49,7 @@ public class DatabaseConnectionFilter implements Filter {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
                 ex.printStackTrace();
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | NamingException ex) {
             ex.printStackTrace(); // fallo al obtener la conexión
         }
     }
