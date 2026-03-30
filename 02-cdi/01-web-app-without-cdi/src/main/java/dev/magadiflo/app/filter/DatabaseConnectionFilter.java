@@ -16,9 +16,9 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 @WebFilter("/*") //El patrón definido indica que se aplicará a cualquier ruta
-public class DriverManagerConnectionFilter implements Filter {
+public class DatabaseConnectionFilter implements Filter {
 
-    private static final Logger log = Logger.getLogger(DriverManagerConnectionFilter.class.getName());
+    private static final Logger log = Logger.getLogger(DatabaseConnectionFilter.class.getName());
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
