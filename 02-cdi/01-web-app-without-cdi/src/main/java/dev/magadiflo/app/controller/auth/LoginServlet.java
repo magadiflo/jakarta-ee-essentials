@@ -1,4 +1,4 @@
-package dev.magadiflo.app.controller;
+package dev.magadiflo.app.controller.auth;
 
 import dev.magadiflo.app.model.User;
 import dev.magadiflo.app.service.LoginService;
