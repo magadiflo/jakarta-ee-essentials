@@ -39,7 +39,7 @@ que sí importan, su equivalente en `Spring` y el nivel de profundidad recomenda
 aplicaciones empresariales en Java. Es el sucesor de `Java EE` y define APIs que permiten construir aplicaciones
 `portables`, `escalables` y `mantenibles`, desplegadas sobre un servidor de aplicaciones.
 
-![01.png](assets/00-introduccion/01.png)
+![00.png](assets/00-introduccion/00.png)
 
 ### 🏗️ Contenedores dentro de un servidor de aplicaciones
 
@@ -117,7 +117,7 @@ adecuado según el contexto.
 - En nuestro caso, usaremos el binario para Windows:  
   [Windows zip (pgp, sha512)](https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.18/bin/apache-tomcat-11.0.18-windows-x64.zip)
 
-  ![02.png](assets/00-introduccion/02.png)
+  ![01.png](assets/00-introduccion/01.png)
 
 ### 2️⃣ Instalación
 
@@ -278,7 +278,7 @@ Cuando `Maven` descarga tus dependencias del `pom.xml`, las guarda como archivos
 
 ## 📂 Creando la estructura del proyecto
 
-Como parte de la convención de `Jakarta EE`, creamos un directorio llamado **`webapp`** dentro de `src/main`.  
+Como parte de la convención de `Jakarta EE`, creamos un directorio llamado `/webapp` dentro de `src/main`.  
 Este directorio debe llamarse exactamente así, ya que es donde se colocan los recursos web de la aplicación.
 
 Dentro de `src/main/webapp` agregamos un archivo `index.html` con contenido básico:
@@ -296,19 +296,27 @@ Dentro de `src/main/webapp` agregamos un archivo `index.html` con contenido bás
 </html>
 ```
 
-### ⚙️ Configurando el arranque de la aplicación en IntelliJ IDEA
+#### 📌 Nota práctica
+
+> El directorio `/webapp` es obligatorio porque Maven lo reconoce como el lugar donde se almacenan los recursos web
+(HTML, JSP, archivos estáticos).
+
+## ⚙️ Configurando el arranque de la aplicación en IntelliJ IDEA
 
 1. Ir a `Edit Configurations...`
 2. Seleccionar `Add new...` → `Maven`
 3. Configurar:
     - Name: `01-web-app` (nombre de nuestra aplicación)
     - Run (Command line): `tomcat7:redeploy`
+    - Working directory: `01-web-app` (directorio del proyecto a ejecutar)
 4. Guardar con `Apply` → `OK`
+
+La imagen muestra cómo quedaría nuestra configuración de ejecución:
+
+![02.png](assets/00-introduccion/02.png)
 
 #### 📌 Nota práctica
 
-> - El directorio `webapp` es obligatorio porque Maven lo reconoce como el lugar donde se almacenan los recursos web
-    (HTML, JSP, archivos estáticos).
 > - El comando `tomcat7:redeploy` permite compilar, empaquetar y desplegar automáticamente el proyecto en Tomcat sin
     necesidad de copiar manualmente el WAR.
 > - Aunque el plugin se llama `tomcat7`, funciona también con versiones modernas como `Tomcat 11`.
@@ -345,12 +353,14 @@ Using CATALINA_HOME:   "C:\apache-tomcat-11.0.18"
 
 ## 📦 Construcción y despliegue automático del WAR
 
-Gracias a la configuración previa en IntelliJ con el plugin Tomcat Maven, podemos ejecutar:
+Gracias a la configuración de arranque que hicimos en el apartado
+[⚙️ Configurando el arranque de la aplicación en IntelliJ IDEA](#-configurando-el-arranque-de-la-aplicación-en-intellij-idea)
+con el plugin Tomcat Maven, podemos ejecutar una de las siguientes dos opciones:
 
-- `Run 01-web-app`
-- o `Debug 01-web-app`
+1. `Run 01-web-app`
+2. `Debug 01-web-app`
 
-Esto construye el archivo `.war` y lo despliega automáticamente en `Tomcat`.
+Al ejecutar una de esas dos opciones, se construirá el archivo `.war` y lo desplegará automáticamente en `Tomcat`.
 
 Ejemplo de log:
 
