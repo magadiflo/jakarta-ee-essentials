@@ -39,11 +39,11 @@ public class ShoppingCart {
         this.items.removeIf(cartItem -> productId.equals(cartItem.getProduct().getId()));
     }
 
-    public void increaseQuantityOfItem(Long productId, Integer quantity) {
+    public void setItemQuantity(Long productId, Integer quantity) {
         this.items.stream()
                 .filter(cartItem -> productId.equals(cartItem.getProduct().getId()))
                 .findFirst()
-                .ifPresent(cartItem -> cartItem.increaseQuantity(quantity));
+                .ifPresent(cartItem -> cartItem.setQuantity(quantity));
     }
 
     public void decreaseQuantityOfItem(Long productId, Integer quantity) {

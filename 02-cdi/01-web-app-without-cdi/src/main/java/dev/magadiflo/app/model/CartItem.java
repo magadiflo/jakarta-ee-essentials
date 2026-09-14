@@ -35,6 +35,13 @@ public class CartItem {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser positiva");
+        }
+        this.quantity = quantity;
+    }
+
     public void increaseQuantity(int quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser positiva");

@@ -63,10 +63,10 @@ public class ProductFormServlet extends HttpServlet {
         BigDecimal price = new BigDecimal(req.getParameter("price"));
 
         // Si viene productId → UPDATE, si no → INSERT
-        Long productId = Objects.nonNull(req.getParameter("productId"))
+        Long productId = Objects.nonNull(req.getParameter("productId")) && !req.getParameter("productId").isBlank()
                 ? Long.parseLong(req.getParameter("productId"))
                 : null;
-        Long categoryId = Objects.nonNull(req.getParameter("categoryId"))
+        Long categoryId = Objects.nonNull(req.getParameter("categoryId")) && !req.getParameter("categoryId").isBlank()
                 ? Long.parseLong(req.getParameter("categoryId"))
                 : null;
 

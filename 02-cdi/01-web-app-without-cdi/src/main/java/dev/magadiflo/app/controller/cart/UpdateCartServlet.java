@@ -48,10 +48,10 @@ public class UpdateCartServlet extends HttpServlet {
         while (names.hasMoreElements()) {
             String parameterName = names.nextElement();
             if (parameterName.startsWith("quantity_")) {
-                long productId = Long.parseLong(parameterName.substring(9));
+                long productId = Long.parseLong(parameterName.substring(9)); // extrae el ID después de "quantity_"
                 String quantity = req.getParameter(parameterName);
                 if (Objects.nonNull(quantity)) {
-                    shoppingCart.increaseQuantityOfItem(productId, Integer.parseInt(quantity));
+                    shoppingCart.setItemQuantity(productId, Integer.parseInt(quantity));
                 }
             }
         }
