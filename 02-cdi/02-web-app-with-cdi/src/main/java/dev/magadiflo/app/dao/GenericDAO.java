@@ -1,0 +1,14 @@
+package dev.magadiflo.app.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public interface GenericDAO<T> {
+    List<T> getAll() throws SQLException;
+
+    T findById(Long id) throws SQLException;
+
+    void save(T t) throws SQLException;
+
+    void deleteById(Long id) throws SQLException;
+}
