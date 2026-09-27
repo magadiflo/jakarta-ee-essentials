@@ -5,12 +5,12 @@ import dev.magadiflo.app.model.Product;
 import dev.magadiflo.app.model.ShoppingCart;
 import dev.magadiflo.app.service.ProductService;
 import dev.magadiflo.app.service.impl.ProductServiceImpl;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,6 +18,10 @@ import java.util.Optional;
 
 @WebServlet("/carts/add")
 public class AddToCartServlet extends HttpServlet {
+
+    @Inject
+    private ShoppingCart shoppingCart;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -28,9 +32,9 @@ public class AddToCartServlet extends HttpServlet {
 
         if (optionalProduct.isPresent()) {
             CartItem cartItem = new CartItem(1, optionalProduct.get());
-            HttpSession session = req.getSession();
-            ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shopping-cart");
-            shoppingCart.addItemToCart(cartItem);
+//            HttpSession session = req.getSession();
+//            ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute("shopping-cart");
+            this.shoppingCart.addItemToCart(cartItem);
         }
 
         resp.sendRedirect(req.getContextPath() + "/carts/view");

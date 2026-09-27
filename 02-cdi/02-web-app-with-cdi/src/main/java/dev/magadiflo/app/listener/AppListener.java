@@ -1,7 +1,10 @@
 package dev.magadiflo.app.listener;
 
-import dev.magadiflo.app.model.ShoppingCart;
-import jakarta.servlet.*;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.ServletRequestEvent;
+import jakarta.servlet.ServletRequestListener;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
@@ -44,7 +47,9 @@ public class AppListener implements ServletContextListener, ServletRequestListen
     public void sessionCreated(HttpSessionEvent se) {
         // Se ejecuta cuando Tomcat crea una nueva sesión HTTP para un usuario
         this.servletContext.log("Session HTTP inicializada!");
-        se.getSession().setAttribute("shopping-cart", new ShoppingCart());
+        //Ya no necesitamos crear la instancia de ShoppingCart de manera explícita con el operador new,
+        // ya lo estamos manejando con la anotación @SessionScoped y el contexto CDI
+        //se.getSession().setAttribute("shopping-cart", new ShoppingCart());
     }
 
     @Override
