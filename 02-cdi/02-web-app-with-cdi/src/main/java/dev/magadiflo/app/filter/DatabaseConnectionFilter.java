@@ -1,7 +1,8 @@
 package dev.magadiflo.app.filter;
 
-import dev.magadiflo.app.db.DataSourceConnectionFactory;
 import dev.magadiflo.app.exception.DatabaseException;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,7 +11,6 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletResponse;
 
-import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,10 +21,17 @@ public class DatabaseConnectionFilter implements Filter {
 
     private static final Logger log = Logger.getLogger(DatabaseConnectionFilter.class.getName());
 
+    @Inject
+    @Named("connection") // inyecta el bean Connection producido por ProducerResources
+    private Connection conn;
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        try (Connection connection = DataSourceConnectionFactory.getConnection()) {
+
+        // ✅ Antes: try (Connection connection = DataSourceConnectionFactory.getConnection())
+        // ✅ Ahora: la conexión ya viene inyectada por CDI
+        try (Connection connection = this.conn) {
 
             // Desactivamos autoCommit para manejar la transacción manualmente
             if (connection.getAutoCommit()) {
@@ -49,7 +56,7 @@ public class DatabaseConnectionFilter implements Filter {
                 httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
                 ex.printStackTrace();
             }
-        } catch (SQLException | NamingException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace(); // fallo al obtener la conexión
         }
     }
