@@ -3,6 +3,9 @@ package dev.magadiflo.app.dao.impl;
 import dev.magadiflo.app.dao.GenericDAO;
 import dev.magadiflo.app.model.Category;
 import dev.magadiflo.app.model.Product;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ApplicationScoped
 public class ProductDAOImpl implements GenericDAO<Product> {
 
     private static final String SQL_ALL_PRODUCTS = """
@@ -22,11 +26,10 @@ public class ProductDAOImpl implements GenericDAO<Product> {
             FROM products AS p
                 INNER JOIN categories AS c ON(p.category_id = c.id)
             """;
-    private final Connection connection;
 
-    public ProductDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
+    @Inject
+    @Named("connection")
+    private Connection connection;
 
     @Override
     public List<Product> getAll() throws SQLException {

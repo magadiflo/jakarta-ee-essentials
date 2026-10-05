@@ -2,6 +2,9 @@ package dev.magadiflo.app.dao.impl;
 
 import dev.magadiflo.app.dao.GenericDAO;
 import dev.magadiflo.app.model.Category;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,11 +14,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApplicationScoped
 public class CategoryDAOImpl implements GenericDAO<Category> {
 
     private final Connection connection;
 
-    public CategoryDAOImpl(Connection connection) {
+    @Inject
+    public CategoryDAOImpl(@Named("connection") Connection connection) {
         this.connection = connection;
     }
 

@@ -40,11 +40,8 @@ public class DatabaseConnectionFilter implements Filter {
             }
 
             try {
-                // Compartimos la conexión con el servlet vía atributo del request
-                log.info("Agregando 'connection' al request");
-                request.setAttribute("connection", connection);
-
-                chain.doFilter(request, response); // Continuamos con la cadena de filtros hasta llegar al Servlet
+                // Continuamos con la cadena de filtros hasta llegar al Servlet
+                chain.doFilter(request, response);
 
                 log.info("Realizando 'commit' en la base de datos");
                 connection.commit(); // tod OK → confirmamos cambios

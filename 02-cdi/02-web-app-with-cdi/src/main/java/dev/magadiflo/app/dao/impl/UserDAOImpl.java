@@ -2,6 +2,9 @@ package dev.magadiflo.app.dao.impl;
 
 import dev.magadiflo.app.dao.UserDAO;
 import dev.magadiflo.app.model.User;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,13 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@ApplicationScoped
 public class UserDAOImpl implements UserDAO {
 
-    private final Connection connection;
-
-    public UserDAOImpl(Connection connection) {
-        this.connection = connection;
-    }
+    @Inject
+    @Named("connection")
+    private Connection connection;
 
     @Override
     public List<User> getAll() throws SQLException {

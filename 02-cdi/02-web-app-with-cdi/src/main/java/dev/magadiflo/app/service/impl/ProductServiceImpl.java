@@ -1,28 +1,25 @@
 package dev.magadiflo.app.service.impl;
 
 import dev.magadiflo.app.dao.GenericDAO;
-import dev.magadiflo.app.dao.impl.CategoryDAOImpl;
-import dev.magadiflo.app.dao.impl.ProductDAOImpl;
 import dev.magadiflo.app.exception.DatabaseException;
 import dev.magadiflo.app.model.Category;
 import dev.magadiflo.app.model.Product;
 import dev.magadiflo.app.service.ProductService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@ApplicationScoped
 public class ProductServiceImpl implements ProductService {
 
-    private final GenericDAO<Product> productDao;
-    private final GenericDAO<Category> categoryDao;
+    @Inject
+    private GenericDAO<Product> productDao;
 
-    // Recibe la conexión por constructor y crea sus propios DAOs
-    public ProductServiceImpl(Connection connection) {
-        this.productDao = new ProductDAOImpl(connection);
-        this.categoryDao = new CategoryDAOImpl(connection);
-    }
+    @Inject
+    private GenericDAO<Category> categoryDao;
 
     @Override
     public List<Product> getAllProducts() {
