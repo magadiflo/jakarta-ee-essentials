@@ -4,7 +4,7 @@ import dev.magadiflo.app.model.User;
 import dev.magadiflo.app.service.LoginService;
 import dev.magadiflo.app.service.UserService;
 import dev.magadiflo.app.service.impl.LoginServiceSessionImpl;
-import dev.magadiflo.app.service.impl.UserServiceImpl;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,11 +14,13 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.Optional;
 
 @WebServlet({"/login", "/login.html"})
 public class LoginServlet extends HttpServlet {
+
+    @Inject
+    private UserService userService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -63,8 +65,7 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        UserService service = new UserServiceImpl((Connection) req.getAttribute("connection"));
-        Optional<User> loginOptional = service.login(username, password);
+        Optional<User> loginOptional = this.userService.login(username, password);
 
         if (loginOptional.isPresent()) {
             HttpSession session = req.getSession();

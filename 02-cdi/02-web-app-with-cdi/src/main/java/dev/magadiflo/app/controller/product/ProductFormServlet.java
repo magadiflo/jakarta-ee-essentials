@@ -3,7 +3,7 @@ package dev.magadiflo.app.controller.product;
 import dev.magadiflo.app.model.Category;
 import dev.magadiflo.app.model.Product;
 import dev.magadiflo.app.service.ProductService;
-import dev.magadiflo.app.service.impl.ProductServiceImpl;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,19 +12,19 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
 @WebServlet("/products/form")
 public class ProductFormServlet extends HttpServlet {
+
+    @Inject
+    private ProductService productService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Connection connection = (Connection) req.getAttribute("connection");
-        ProductService productService = new ProductServiceImpl(connection);
-
         // Si viene productId → edición, si no → creación
         Long productId = Objects.nonNull(req.getParameter("productId"))
                 ? Long.parseLong(req.getParameter("productId"))
@@ -35,13 +35,13 @@ public class ProductFormServlet extends HttpServlet {
         product.setCategory(new Category());
 
         if (Objects.nonNull(productId)) {
-            Optional<Product> optionalProduct = productService.getProduct(productId);
+            Optional<Product> optionalProduct = this.productService.getProduct(productId);
             if (optionalProduct.isPresent()) {
                 product = optionalProduct.get();
             }
         }
 
-        req.setAttribute("categories", productService.getAllCategories());
+        req.setAttribute("categories", this.productService.getAllCategories());
         req.setAttribute("product", product);
         req.setAttribute("title", req.getAttribute("title") + ": Listado de productos");
 
@@ -53,9 +53,6 @@ public class ProductFormServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Connection connection = (Connection) req.getAttribute("connection");
-        ProductService productService = new ProductServiceImpl(connection);
-
         // Lee los parámetros del formulario
         String name = req.getParameter("name");
         String sku = req.getParameter("sku");
@@ -82,7 +79,7 @@ public class ProductFormServlet extends HttpServlet {
         product.setSku(sku);
         product.setCreatedAt(createdAt);
 
-        productService.saveProduct(product);
+        this.productService.saveProduct(product);
         resp.sendRedirect(req.getContextPath() + "/products");
     }
 }
