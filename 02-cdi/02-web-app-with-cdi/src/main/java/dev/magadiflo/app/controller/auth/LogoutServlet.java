@@ -1,7 +1,7 @@
 package dev.magadiflo.app.controller.auth;
 
 import dev.magadiflo.app.service.LoginService;
-import dev.magadiflo.app.service.impl.LoginServiceSessionImpl;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,11 +14,14 @@ import java.util.Optional;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
+
+    @Inject
+    private LoginService loginService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        LoginService loginService = new LoginServiceSessionImpl();
-        Optional<String> usernameOptional = loginService.getUsername(req);
+        Optional<String> usernameOptional = this.loginService.getUsername(req);
         if (usernameOptional.isPresent()) {
             HttpSession session = req.getSession();
             session.invalidate();
