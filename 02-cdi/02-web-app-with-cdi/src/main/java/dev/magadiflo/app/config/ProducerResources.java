@@ -1,9 +1,9 @@
 package dev.magadiflo.app.config;
 
+import dev.magadiflo.app.annotations.MySQLConnection;
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Produces;
-import jakarta.inject.Named;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -20,7 +20,7 @@ public class ProducerResources {
 
     @Produces
     @RequestScoped
-    @Named("connection")
+    @MySQLConnection
     private Connection connection() throws NamingException, SQLException {
         log.info("Estableciendo conexión a la base de datos");
         return this.dataSource.getConnection();

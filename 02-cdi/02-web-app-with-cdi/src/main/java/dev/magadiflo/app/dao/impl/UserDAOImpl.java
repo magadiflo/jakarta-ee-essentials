@@ -1,10 +1,10 @@
 package dev.magadiflo.app.dao.impl;
 
+import dev.magadiflo.app.annotations.MySQLConnection;
 import dev.magadiflo.app.dao.UserDAO;
 import dev.magadiflo.app.model.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     @Inject
-    @Named("connection")
+    @MySQLConnection
     private Connection connection;
 
     @Override

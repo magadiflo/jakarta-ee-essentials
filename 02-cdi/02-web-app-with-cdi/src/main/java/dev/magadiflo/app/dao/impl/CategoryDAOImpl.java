@@ -1,10 +1,10 @@
 package dev.magadiflo.app.dao.impl;
 
+import dev.magadiflo.app.annotations.MySQLConnection;
 import dev.magadiflo.app.dao.GenericDAO;
 import dev.magadiflo.app.model.Category;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ public class CategoryDAOImpl implements GenericDAO<Category> {
     private final Connection connection;
 
     @Inject
-    public CategoryDAOImpl(@Named("connection") Connection connection) {
+    public CategoryDAOImpl(@MySQLConnection Connection connection) {
         this.connection = connection;
     }
 

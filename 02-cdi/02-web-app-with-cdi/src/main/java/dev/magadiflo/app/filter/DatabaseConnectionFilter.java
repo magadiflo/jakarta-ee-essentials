@@ -1,8 +1,8 @@
 package dev.magadiflo.app.filter;
 
+import dev.magadiflo.app.annotations.MySQLConnection;
 import dev.magadiflo.app.exception.DatabaseException;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ public class DatabaseConnectionFilter implements Filter {
     private static final Logger log = Logger.getLogger(DatabaseConnectionFilter.class.getName());
 
     @Inject
-    @Named("connection") // inyecta el bean Connection producido por ProducerResources
+    @MySQLConnection
     private Connection conn;
 
     @Override
