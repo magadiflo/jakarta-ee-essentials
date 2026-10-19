@@ -1,15 +1,13 @@
 package dev.magadiflo.app.model;
 
-import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Named;
+import dev.magadiflo.app.annotations.ShoppingCartSessionBean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Named
-@SessionScoped //siempre debemos implementar Serializable para este scope
+@ShoppingCartSessionBean
 public class ShoppingCart implements Serializable {
 
     private List<CartItem> items = new ArrayList<>();
