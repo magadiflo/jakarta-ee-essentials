@@ -23,38 +23,37 @@ public class DatabaseConnectionFilter implements Filter {
 
     @Inject
     @MySQLConnection
-    private Connection conn;
+    private Connection connection;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        // ✅ Antes: try (Connection connection = DataSourceConnectionFactory.getConnection())
-        // ✅ Ahora: la conexión ya viene inyectada por CDI
-        try (Connection connection = this.conn) {
-
+        // El filtro solo quedaría para el manejo de las transacciones. Para cerrar la conexión lo haríamos
+        // en la clase ProducerResources con la anotación @Disposes
+        try {
             // Desactivamos autoCommit para manejar la transacción manualmente
-            if (connection.getAutoCommit()) {
+            if (this.connection.getAutoCommit()) {
                 log.info("Desactivando autoCommit");
-                connection.setAutoCommit(false);
+                this.connection.setAutoCommit(false);
             }
 
+            chain.doFilter(request, response);
+
+            log.info("Realizando 'commit' en la base de datos");
+            this.connection.commit(); // tod OK → confirmamos cambios
+
+        } catch (SQLException | DatabaseException ex) {
+            log.warning("Realizando 'rollback' en la base de datos");
             try {
-                // Continuamos con la cadena de filtros hasta llegar al Servlet
-                chain.doFilter(request, response);
-
-                log.info("Realizando 'commit' en la base de datos");
-                connection.commit(); // tod OK → confirmamos cambios
-            } catch (SQLException | DatabaseException ex) {
-                log.warning("Realizando 'rollback' en la base de datos");
-                connection.rollback(); // algo falló → revertimos cambios
-
-                HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
-                ex.printStackTrace();
+                this.connection.rollback(); // algo falló → revertimos cambios
+            } catch (SQLException rollbackEx) {
+                ex.addSuppressed(rollbackEx);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace(); // fallo al obtener la conexión
+
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+            ex.printStackTrace();
         }
     }
 }
