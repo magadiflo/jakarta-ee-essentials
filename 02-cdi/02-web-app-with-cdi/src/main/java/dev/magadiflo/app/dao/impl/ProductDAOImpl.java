@@ -4,6 +4,8 @@ import dev.magadiflo.app.annotations.MySQLConnection;
 import dev.magadiflo.app.dao.GenericDAO;
 import dev.magadiflo.app.model.Category;
 import dev.magadiflo.app.model.Product;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -17,15 +19,29 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ProductDAOImpl implements GenericDAO<Product> {
+
+    @Inject
+    private Logger log;
 
     private static final String SQL_ALL_PRODUCTS = """
             SELECT p.*, c.name AS category_name
             FROM products AS p
                 INNER JOIN categories AS c ON(p.category_id = c.id)
             """;
+
+    @PostConstruct
+    public void initialize() {
+        log.info("Se ha completado la inicialización del bean " + this.getClass().getName());
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        log.info("Se está ejecutando la destrucción del bean " + this.getClass().getName());
+    }
 
     @Inject
     @MySQLConnection
