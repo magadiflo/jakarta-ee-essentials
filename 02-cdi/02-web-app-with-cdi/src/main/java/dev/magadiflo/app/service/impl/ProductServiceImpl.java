@@ -1,18 +1,18 @@
 package dev.magadiflo.app.service.impl;
 
+import dev.magadiflo.app.annotations.Service;
 import dev.magadiflo.app.dao.GenericDAO;
 import dev.magadiflo.app.exception.DatabaseException;
 import dev.magadiflo.app.model.Category;
 import dev.magadiflo.app.model.Product;
 import dev.magadiflo.app.service.ProductService;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationScoped
+@Service
 public class ProductServiceImpl implements ProductService {
 
     @Inject
