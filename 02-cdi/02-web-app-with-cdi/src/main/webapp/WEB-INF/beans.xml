@@ -5,5 +5,6 @@
        version="3.0" bean-discovery-mode="annotated">
     <interceptors>
         <class>dev.magadiflo.app.interceptor.logging.LoggingInterceptor</class>
+        <class>dev.magadiflo.app.interceptor.transactional.TransactionalInterceptor</class>
     </interceptors>
 </beans>
