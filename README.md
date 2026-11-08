@@ -1,4 +1,4 @@
-# 🌐 Jakarta EE — Fundamentos Esenciales
+# 🌐 Jakarta EE 11 — Fundamentos Esenciales
 
 Este repositorio reúne los **fundamentos esenciales de Jakarta EE** que todo desarrollador Java debería conocer antes
 de dar el salto a frameworks modernos como `Quarkus`.
